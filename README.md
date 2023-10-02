@@ -1,0 +1,2 @@
+Expenses App
+FastAPI + SQLalchemy
