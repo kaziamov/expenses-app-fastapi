@@ -25,5 +25,5 @@ services:
       POSTGRES_HOST: database
     ports:
       - ${APP_PORT}:${APP_PORT}
-    command: uvicorn expenses_app:app --host ${APP_HOST} --port ${APP_PORT} --reload --reload-dir .
+    command: uvicorn expenses_app:app --host ${APP_HOST} --port ${APP_PORT} --reload --reload-dir . --log-config=log_config.ini --log-level=info
 

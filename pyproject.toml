@@ -16,6 +16,10 @@ asyncpg = "^0.28.0"
 python-dotenv = "^1.0.0"
 alembic = "^1.12.0"
 psycopg2-binary = "^2.9.8"
+starlette-admin = "^0.11.2"
+aiogram = "^3.1.1"
+pyngrok = "^7.0.0"
+
 
 
 [tool.poetry.group.dev.dependencies]
