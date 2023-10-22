@@ -1,0 +1,9 @@
+[build]
+builder = "nixpacks"
+buildCommand = "pip install poetry && poetry install --no-dev"
+
+[deploy]
+startCommand = "uvicorn expenses_app:app"
+healthcheckPath = "/"
+healthcheckTimeout = 100
+restartPolicyType = "never"

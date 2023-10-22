@@ -1,0 +1,25 @@
+repos:
+-   repo: git://github.com/pre-commit/mirrors-pylint
+    sha: 'v1.5.4'
+    hooks:
+    -   id: pylint
+        exclude: '.*/migrations/*'
+-   repo: git://github.com/pre-commit/pre-commit-hooks
+    sha: 'v0.4.2'
+    hooks:
+    -   id: trailing-whitespace
+    -   id: flake8
+        exclude: '.*/migrations/*'
+
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v2.3.0
+    hooks:
+    -   id: check-yaml
+    -   id: end-of-file-fixer
+    -   id: trailing-whitespace
+        exclude: '.*/migrations/*'
+-   repo: https://github.com/psf/black
+    rev: 22.10.0
+    hooks:
+    -   id: black
+        exclude: '.*/migrations/*'
