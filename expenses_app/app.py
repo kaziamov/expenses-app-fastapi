@@ -12,10 +12,10 @@ from .bots import telegram_bot, telegram_dispather
 
 logger = logging.getLogger(__name__)
 
-app = FastAPI()
-admins_view.mount_to(app)
-app.include_router(webhook_api_router)
-app.add_middleware(
+fastapi_app = FastAPI()
+# admins_view.mount_to(fastapi_app)
+fastapi_app.include_router(webhook_api_router)
+fastapi_app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
     allow_credentials=True,
@@ -23,18 +23,18 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get("/")
+@fastapi_app.get("/")
 async def root():
     return {"message": "ok"}
 
 
-@app.on_event("startup")
+@fastapi_app.on_event("startup")
 async def on_startup():
     logger.info("Starting up actions")
     await register_webhook(settings.WEBHOOK_DOMAIN)
     telegram_dispather.include_router(messages_handler)
 
 
-@app.on_event("shutdown")
+@fastapi_app.on_event("shutdown")
 async def on_shutdown():
     await telegram_bot.session.close()
