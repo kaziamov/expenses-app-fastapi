@@ -24,7 +24,7 @@ async def root():
 @app.on_event("startup")
 async def on_startup():
     logger.info("Starting up actions")
-    await register_webhook(settings.WEBHOOK_URL)
+    await register_webhook(settings.WEBHOOK_DOMAIN)
     telegram_dispather.include_router(messages_handler)
 
 

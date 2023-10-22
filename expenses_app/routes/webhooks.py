@@ -1,6 +1,8 @@
-from fastapi import APIRouter, types
+from fastapi import APIRouter
+from aiogram import types
 from .. import settings
 
+from ..bots import telegram_dispather, telegram_bot
 webhook_api_router = APIRouter()
 
 
@@ -11,6 +13,5 @@ async def root():
 
 @webhook_api_router.post(f"/{settings.WEBHOOK_PATH}")
 async def telegram_webhook(request: dict):
-    from ..bots import telegram_dispather, telegram_bot
     update = types.Update(**request)
     await telegram_dispather.feed_update(bot=telegram_bot, update=update)
