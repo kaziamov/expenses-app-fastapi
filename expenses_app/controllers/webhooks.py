@@ -1,5 +1,4 @@
 import logging
-from pyngrok import ngrok
 
 from .. import settings
 from ..bots.telegram import telegram_bot
