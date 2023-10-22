@@ -4,6 +4,6 @@ buildCommand = "pip install poetry && poetry install --no-dev"
 
 [deploy]
 numReplicas = 1
-startCommand = "uvicorn expenses_app:app --host=0.0.0.0 --port=80"
+startCommand = "uvicorn expenses_app:app"
 sleepApplication = false
 restartPolicyType = "NEVER"
