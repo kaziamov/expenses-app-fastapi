@@ -1,6 +1,7 @@
 import logging
 
 from fastapi import FastAPI
+from starlette.middleware.cors import CORSMiddleware
 
 from . import settings
 from .controllers.webhooks import register_webhook
@@ -14,7 +15,13 @@ logger = logging.getLogger(__name__)
 app = FastAPI()
 admins_view.mount_to(app)
 app.include_router(webhook_api_router)
-
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get("/")
 async def root():
