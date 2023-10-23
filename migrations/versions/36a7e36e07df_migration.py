@@ -1,8 +1,8 @@
 """migration
 
-Revision ID: 34d1850635eb
-Revises: 36d483b87060
-Create Date: 2023-10-02 17:53:07.406687
+Revision ID: 36a7e36e07df
+Revises: 
+Create Date: 2023-10-23 14:49:54.377850
 
 """
 from typing import Sequence, Union
@@ -12,8 +12,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = '34d1850635eb'
-down_revision: Union[str, None] = '36d483b87060'
+revision: str = '36a7e36e07df'
+down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
@@ -24,8 +24,8 @@ def upgrade() -> None:
     sa.Column('name', sa.String(), nullable=True),
     sa.Column('code', sa.String(), nullable=True),
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('created_at', sa.Integer(), nullable=True),
     sa.Column('updated_at', sa.Integer(), nullable=True),
+    sa.Column('created_at', sa.Integer(), nullable=True),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('code'),
     sa.UniqueConstraint('id'),
@@ -34,8 +34,8 @@ def upgrade() -> None:
     op.create_table('groups',
     sa.Column('name', sa.String(), nullable=True),
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('created_at', sa.Integer(), nullable=True),
     sa.Column('updated_at', sa.Integer(), nullable=True),
+    sa.Column('created_at', sa.Integer(), nullable=True),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('id'),
     sa.UniqueConstraint('name')
@@ -44,8 +44,8 @@ def upgrade() -> None:
     sa.Column('name', sa.String(), nullable=True),
     sa.Column('currency_id', sa.Integer(), nullable=True),
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('created_at', sa.Integer(), nullable=True),
     sa.Column('updated_at', sa.Integer(), nullable=True),
+    sa.Column('created_at', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['currency_id'], ['currencies.id'], ),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('id'),
@@ -55,8 +55,8 @@ def upgrade() -> None:
     sa.Column('name', sa.String(), nullable=True),
     sa.Column('group_id', sa.Integer(), nullable=True),
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('created_at', sa.Integer(), nullable=True),
     sa.Column('updated_at', sa.Integer(), nullable=True),
+    sa.Column('created_at', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['group_id'], ['groups.id'], ),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('id'),
@@ -68,9 +68,10 @@ def upgrade() -> None:
     sa.Column('account_id', sa.Integer(), nullable=True),
     sa.Column('amount', sa.Integer(), nullable=True),
     sa.Column('currency_id', sa.Integer(), nullable=True),
+    sa.Column('date', sa.Date(), nullable=True),
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('created_at', sa.Integer(), nullable=True),
     sa.Column('updated_at', sa.Integer(), nullable=True),
+    sa.Column('created_at', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['account_id'], ['accounts.id'], ),
     sa.ForeignKeyConstraint(['category_id'], ['categories.id'], ),
     sa.ForeignKeyConstraint(['currency_id'], ['currencies.id'], ),

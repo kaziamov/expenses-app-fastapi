@@ -13,7 +13,7 @@ from .bots import telegram_bot, telegram_dispather
 logger = logging.getLogger(__name__)
 
 fastapi_app = FastAPI()
-# admins_view.mount_to(fastapi_app)
+admins_view.mount_to(fastapi_app)
 fastapi_app.include_router(webhook_api_router)
 fastapi_app.add_middleware(
     CORSMiddleware,
