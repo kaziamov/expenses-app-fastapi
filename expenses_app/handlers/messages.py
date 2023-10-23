@@ -14,18 +14,42 @@ logger = logging.getLogger(__name__)
 
 # Mapper for COMMANDS, C for short
 C: utils.Mapper = utils.Mapper(dict(
+    start="start",
     help="help",
     newcat="newcat",
     newexp="newexp",
     set_category="set_category",
     set_currency="set_currency",
     set_account="set_account",
+    income="income",
+    expense="expense",
 ))
+
+
+HELP_MESSAGE = """
+📌 Сообщение с подсказками /help
+
+😺 Чтобы создать новую категорию используйте команду newcat в таком формате:
+```
+/newcat Продукты
+```
+
+🤑 Чтобы создать новую запись о расходе/доходе напишите сообщение в чат, в таком формате: 
+```
+Молоко
+100
+```
+"""
 
 
 @messages_handler.message(Command(C.help))
 async def help(message: types.Message):
-    await message.reply("TODO: Help message") # TODO: Help message
+    await message.reply(HELP_MESSAGE, parse_mode="MarkdownV2")
+    
+    
+@messages_handler.message(Command(C.start))
+async def help(message: types.Message):
+    await message.reply(HELP_MESSAGE, parse_mode="MarkdownV2")
 
 
 @messages_handler.message(Command(C.newcat))
