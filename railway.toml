@@ -2,5 +2,5 @@
 dockerfilePath = "Dockerfile.backend"
 
 [deploy]
-startCommand = "uvicorn expenses_app:app --host 0.0.0.0 --port 8000 --log-config=log_config.ini"
+startCommand = "alembic upgrade head && uvicorn expenses_app:app --host 0.0.0.0 --port 8000 --log-config=log_config.ini"
 restartPolicyType = "never"
