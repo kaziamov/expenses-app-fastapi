@@ -25,5 +25,5 @@ services:
       POSTGRES_HOST: database
     ports:
       - ${APP_PORT}:${APP_PORT}
-    command: uvicorn expenses_app:fastapi_app --host ${APP_HOST} --port ${APP_PORT} --reload --reload-dir . --log-config=log_config.ini --log-level=info
+    command: uvicorn expenses_app:app --workers 4 --host ${APP_HOST} --port ${APP_PORT} --reload --reload-dir . --log-config=log_config.ini --log-level=info
 

@@ -1,11 +1,11 @@
 import pytest
 
-from expenses_app.models import BaseBDModel
+from expenses_app.models import BaseSQLModel
 
 TestSession =
 
 @pytest.fixture()
 def clear_database():
-    BaseBDModel.metadata.create_all()
+    BaseSQLModel.metadata.create_all()
     yield
-    BaseBDModel.metadata.drop_all()
+    BaseSQLModel.metadata.drop_all()

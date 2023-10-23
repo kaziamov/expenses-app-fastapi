@@ -7,7 +7,7 @@ dev:
 rm:
 	sudo rm -rf ./pgdata
 
-rebuild: rm build
+rebuild: build
 
 new-build-and-migrate: rm
 	docker-compose -f docker-compose.migrate.yml --env-file .env.docker up --force-recreate --build
