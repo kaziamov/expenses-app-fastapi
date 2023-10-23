@@ -45,6 +45,16 @@ async def get_all(model: BaseSQLModel) -> List[BaseSQLModel]:
     return objects
 
 
+async def get_all_with_filter(model: BaseSQLModel, filters: dict) -> List[BaseSQLModel]:
+    """Get objects from db"""
+    query = select(model).filter_by(**filters)
+    async with AsyncSession() as conn:
+        result = await conn.execute(query)
+    logger.debug(f"{__name__}.get_all: result = {result}")
+    objects = result.scalars().all()
+    logger.debug(f"{__name__}.get_all: obj = {objects}")
+    return objects
+
 async def get_objects(model: BaseSQLModel, filters: Dict, limit=10, offset=10) -> List[BaseSQLModel]:
     """Get objects from db"""
     query = select(model).filter_by(**filters).limit(limit).offset(offset)

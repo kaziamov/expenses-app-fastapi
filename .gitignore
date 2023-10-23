@@ -1,6 +1,8 @@
 .vscode/
 .idea/
 
+.env
+
 pgdata/
 
 # Byte-compiled / optimized / DLL files

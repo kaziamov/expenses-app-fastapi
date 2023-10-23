@@ -17,6 +17,9 @@ C: utils.Mapper = utils.Mapper(dict(
     help="help",
     newcat="newcat",
     newexp="newexp",
+    set_category="set_category",
+    set_currency="set_currency",
+    set_account="set_account",
 ))
 
 
@@ -43,38 +46,35 @@ async def new_expense(message: types.Message):
 
 
 
-async def get_categories_keyboard(id: int, message_id: int) -> types.InlineKeyboardMarkup:
-    categories = await controllers.get_all_categories()
+async def get_categories_keyboard(expence_id: int, message_id: int) -> types.InlineKeyboardMarkup:
     """Inline keyboard with categories"""
+    categories = await controllers.get_all_categories()
+    logger.debug(f"{__name__}.get_categories_keyboard: categories = {categories}")
     buttons = []
     for category in categories:
-        buttons.append(types.InlineKeyboardButton(text=category.name, callback_data=f"set_category:{id}:{category.id}:{message_id}"))
-    if not buttons:
-        return []
+        buttons.append(types.InlineKeyboardButton(text=category.name, callback_data=f"set_category:{expence_id}:{category.id}:{message_id}"))
     keyboard = types.InlineKeyboardMarkup(row_width=2, inline_keyboard=[buttons])
     return keyboard
 
 
-async def get_currencies_keyboard(id: int, message_id: int) -> types.InlineKeyboardMarkup:
-    currencies = await controllers.get_all_currencies()
+async def get_currencies_keyboard(expence_id: int, message_id: int) -> types.InlineKeyboardMarkup:
     """Inline keyboard with currencies"""
+    currencies = await controllers.get_all_currencies()
+    logger.debug(f"{__name__}.get_currencies_keyboard: currencies = {currencies}")
     buttons = []
     for currency in currencies:
-        buttons.append(types.InlineKeyboardButton(text=currency.name, callback_data=f"set_currency:{id}:{currency.id}:{message_id}"))
-    if not buttons:
-        return []
+        buttons.append(types.InlineKeyboardButton(text=currency.name, callback_data=f"set_currency:{expence_id}:{currency.id}:{message_id}"))
     keyboard = types.InlineKeyboardMarkup(row_width=2, inline_keyboard=[buttons])
     return keyboard
 
 
-async def get_accounts_keyboard(id: int, currency_id, message_id: int) -> types.InlineKeyboardMarkup:
+async def get_accounts_keyboard(expence_id: int, currency_id, message_id: int) -> types.InlineKeyboardMarkup:
     """Inline keyboard with accounts"""
     accounts = await controllers.get_accounts(currency_id)
+    logger.debug(f"{__name__}.get_accounts_keyboard: accounts = {accounts}")
     buttons = []
     for account in accounts:
-        buttons.append(types.InlineKeyboardButton(text=account.name, callback_data=f"set_account:{id}:{account.id}:{message_id}"))
-    if not buttons:
-        return []
+        buttons.append(types.InlineKeyboardButton(text=account.name, callback_data=f"set_account:{expence_id}:{account.id}:{message_id}"))
     keyboard = types.InlineKeyboardMarkup(row_width=2, inline_keyboard=[buttons])
     return keyboard
 
@@ -91,26 +91,34 @@ async def callback_query_handler(query: types.CallbackQuery):
     if not hasattr(query, "data"):
         logger.info(f"{__name__}.callback_query_handler: No data in query")
         return
+
     query_split_data = query.data.split(":")
-    action = query_split_data
+    action = query_split_data[0]
     expense_id, target_id, original_message_id = [int(i) for i in query_split_data[1:]]
-    logger.debug(f"{__name__}.callback_query_handler: {query_split_data}")
+    logger.debug(f"{__name__}.callback_query_handler: query_split_data = {query_split_data}")
+
     match action:
         case "set_category":
+            logger.debug(f"{__name__}.callback_query_handler: category_id = {target_id}")
             await controllers.update_category(expense_id, target_id)
         case "set_currency":
-            await controllers.update_currency(expense_id, target_id)
+            logger.debug(f"{__name__}.callback_query_handler: currency_id = {target_id}")
             accounts_keyboard = await get_accounts_keyboard(expense_id, target_id, original_message_id)
             logger.debug(f"{__name__}.callback_query_handler: accounts_keyboard = {accounts_keyboard}")
-            if accounts_keyboard:
-                await telegram_bot(SendMessage(
-                    chat_id=message.chat.id,
-                    reply_to_message_id=original_message_id,
-                    text="Select category for account",
-                    reply_markup=accounts_keyboard))
+            params = dict(
+                chat_id=message.chat.id,
+                reply_to_message_id=original_message_id,
+                text="Select category for account",
+                reply_markup=accounts_keyboard
+            )
+            logger.debug(f"{__name__}.callback_query_handler: params = {params}")
+            result = await telegram_bot(SendMessage(**params))
+            logger.debug(f"{__name__}.callback_query_handler: result = {str(result)}")
+            await controllers.update_currency(expense_id, target_id)
         case "set_account":
-            await controllers.update_account(expense_id, target_id)
-    logger.info(f"{__name__}.callback_query_handler: query = {query.data}")
+                logger.debug(f"{__name__}.callback_query_handler: account_id = {target_id}")
+                await controllers.update_account(expense_id, target_id)
+    logger.info(f"{__name__}.callback_query_handler: query.data = {query.data}")
     try:
         await message.bot.delete_message(message.chat.id, message_id)
         logger.info(f"{__name__}.callback_query_handler: Deleted message {message_id}")
