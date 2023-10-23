@@ -2,6 +2,7 @@ import logging
 
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
+from starlette.staticfiles import StaticFiles
 
 from . import settings
 from .controllers.webhooks import register_webhook
@@ -13,6 +14,11 @@ from .bots import telegram_bot, telegram_dispather
 logger = logging.getLogger(__name__)
 
 fastapi_app = FastAPI()
+fastapi_app.mount(
+    path="/static",
+    app=StaticFiles(directory="static", packages=["starlette_admin"]),
+    name="static"
+)
 admins_view.mount_to(fastapi_app)
 fastapi_app.include_router(webhook_api_router)
 # fastapi_app.add_middleware(
