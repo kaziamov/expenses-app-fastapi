@@ -16,9 +16,11 @@ async def get_all_categories() -> list[Category]:
     categories = await get_all(Category)
     return categories
 
+
 async def get_all_currencies() -> list[Currency]:
     currencies = await get_all(Currency)
     return currencies
+
 
 async def get_accounts(currency_id) -> list[Account]:
     accounts = await get_all_with_filter(Account, dict(currency_id=currency_id))
@@ -29,10 +31,12 @@ async def create_expense(description: str, amount: float) -> int:
     new_expense = await create_obj(Expense, description=description, amount=amount)
     return new_expense.id
 
+
 async def update_category(expense_id: int, category_id: int) -> int:
     logger.debug(f"{__name__}.update_category: expense_id = {expense_id}, category_id = {category_id}")
     category = await update_obj(Expense, expense_id, category_id=category_id)
     return category.id
+
 
 async def update_currency(expense_id: int, currency_id: int) -> int:
     logger.debug(f"{__name__}.update_currency: expense_id = {expense_id}, currency_id = {currency_id}")
