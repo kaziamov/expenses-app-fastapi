@@ -4,7 +4,12 @@ from string import ascii_letters, digits
 
 from dotenv import load_dotenv
 
+
 load_dotenv()
+
+
+production = "production"
+
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 WEBHOOK_DOMAIN = os.getenv("WEBHOOK_DOMAIN")
@@ -35,3 +40,12 @@ CACHE_SIZE = int(os.getenv("CACHE_SIZE", 100))
 # Automatic generated
 DATABASE_URL = f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOST}:{POSTGRES_PORT}/{POSTGRES_DB}"
 ASYNC_DATABASE_URL = f"postgresql+asyncpg://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOST}:{POSTGRES_PORT}/{POSTGRES_DB}"
+
+
+# Test env
+ASYNC_TEST_DATABASE_URL = "postgresql+asyncpg://postgres:postgres@0.0.0.0:5432/postgres_test"
+# ASYNC_TEST_DATABASE_URL = "sqlite:///./test.db"
+
+
+# Flags
+FLAG__NOT_PRODUCTION = ENVIROMENT != production

@@ -20,3 +20,12 @@ makemigrate:
 
 #migrate:
 #	poetry run alembic upgrade head
+
+test:
+	export ENVIRONMENT=test && \
+	pytest ./expenses_app -v
+
+
+test-full:
+	export ENVIRONMENT=test && \
+	pytest ./expenses_app -vvv

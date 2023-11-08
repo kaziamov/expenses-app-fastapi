@@ -8,6 +8,7 @@ from . import settings
 from .controllers.webhooks import register_webhook
 from .handlers import messages_handler
 from .routes import webhook_api_router
+from .utils.patching import enable_on_production_only
 from .views.admin import admins_view
 from .bots import telegram_bot, telegram_dispather
 
@@ -35,6 +36,7 @@ async def root():
 
 
 @fastapi_app.on_event("startup")
+@enable_on_production_only
 async def on_startup():
     logger.info("Starting up actions")
     await register_webhook(settings.WEBHOOK_DOMAIN)
