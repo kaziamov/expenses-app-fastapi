@@ -1,5 +1,5 @@
 [build]
-dockerfilePath = "Dockerfile.backend"
+dockerfilePath = "Dockerfile.railway"
 
 [deploy]
 startCommand = "alembic upgrade head && uvicorn expenses_app:app --host 0.0.0.0 --port 8000 --log-config=log_config.ini"
