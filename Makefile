@@ -4,6 +4,9 @@ build:
 dev:
 	docker-compose -f docker-compose.dev.yml --env-file .env.docker up
 
+start:
+	docker-compose -f docker-compose.yml --env-file .env.docker up --build
+
 rm:
 	sudo rm -rf ./pgdata
 
@@ -20,3 +23,5 @@ makemigrate:
 
 #migrate:
 #	poetry run alembic upgrade head
+
+
