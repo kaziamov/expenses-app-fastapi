@@ -23,6 +23,7 @@ services:
       - .env.docker
     environment:
       POSTGRES_HOST: database
+      POSTGRES_PORT: 5432
     ports:
       - ${APP_PORT}:${APP_PORT}
     command: alembic upgrade head

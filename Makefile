@@ -13,7 +13,7 @@ rm:
 rebuild: build
 
 new-build-and-migrate: rm
-	docker-compose -f docker-compose.migrate.yml --env-file .env.docker up --force-recreate --build
+	docker-compose -f docker-compose.migrate.yml --env-file .env.docker up
 
 migrate: rm
 	docker-compose -f docker-compose.migrate.yml --env-file .env.docker up --build

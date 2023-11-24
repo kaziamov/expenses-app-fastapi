@@ -23,6 +23,7 @@ services:
       - .env.docker
     environment:
       POSTGRES_HOST: database
+      POSTGRES_PORT: 5432
     ports:
       - ${APP_PORT}:${APP_PORT}
     command: uvicorn expenses_app:app --workers 4 --host ${APP_HOST} --port ${APP_PORT} --reload --reload-dir . --log-config=log_config.ini --log-level=info
